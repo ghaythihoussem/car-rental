@@ -1,0 +1,84 @@
+name,brand,category,pricePerDay,year,description
+Corolla 1,Toyota,Sedan,120,2020,Reliable compact car
+Corolla 2,Toyota,Sedan,125,2021,Fuel efficient sedan
+Corolla 3,Toyota,Sedan,130,2022,Comfort city car
+Corolla 4,Toyota,Sedan,110,2019,Economical car
+Corolla 5,Toyota,Sedan,115,2020,Daily use car
+
+Yaris 1,Toyota,Sedan,100,2019,Small city car
+Yaris 2,Toyota,Sedan,105,2020,Cheap and efficient
+Yaris 3,Toyota,Sedan,110,2021,Urban compact
+Yaris 4,Toyota,Sedan,95,2018,Very economical
+Yaris 5,Toyota,Sedan,98,2019,Light and easy
+
+Camry 1,Toyota,Sedan,150,2021,Comfort family sedan
+Camry 2,Toyota,Sedan,155,2022,Premium comfort car
+Camry 3,Toyota,Sedan,160,2023,New generation sedan
+Camry 4,Toyota,Sedan,145,2020,Smooth driving
+Camry 5,Toyota,Sedan,148,2021,Long distance comfort
+
+RAV4 1,Toyota,SUV,180,2021,Spacious SUV
+RAV4 2,Toyota,SUV,185,2022,Family SUV
+RAV4 3,Toyota,SUV,190,2023,Modern SUV
+RAV4 4,Toyota,SUV,175,2020,Reliable SUV
+RAV4 5,Toyota,SUV,178,2021,Comfort SUV
+
+Civic 1,Honda,Sedan,130,2021,Popular efficient car
+Civic 2,Honda,Sedan,135,2022,Sporty compact sedan
+Civic 3,Honda,Sedan,128,2020,Daily car
+Civic 4,Honda,Sedan,132,2021,Fuel saver
+Civic 5,Honda,Sedan,140,2023,New design Civic
+
+Accord 1,Honda,Sedan,160,2021,Comfort sedan
+Accord 2,Honda,Sedan,165,2022,Premium sedan
+Accord 3,Honda,Sedan,155,2020,Family car
+Accord 4,Honda,Sedan,158,2021,Smooth ride
+Accord 5,Honda,Sedan,162,2023,Modern sedan
+
+CRV 1,Honda,SUV,190,2021,Family SUV
+CRV 2,Honda,SUV,195,2022,Spacious SUV
+CRV 3,Honda,SUV,200,2023,New generation SUV
+CRV 4,Honda,SUV,185,2020,Comfort SUV
+CRV 5,Honda,SUV,188,2021,Daily SUV
+
+Golf 1,Volkswagen,Sedan,140,2020,European hatchback
+Golf 2,Volkswagen,Sedan,145,2021,Compact car
+Golf 3,Volkswagen,Sedan,150,2022,Modern design
+Golf 4,Volkswagen,Sedan,138,2019,Reliable hatch
+Golf 5,Volkswagen,Sedan,142,2020,City car
+
+Passat 1,Volkswagen,Sedan,170,2021,Business sedan
+Passat 2,Volkswagen,Sedan,175,2022,Comfort ride
+Passat 3,Volkswagen,Sedan,180,2023,Premium sedan
+Passat 4,Volkswagen,Sedan,165,2020,Family sedan
+Passat 5,Volkswagen,Sedan,168,2021,Long trip car
+
+Tiguan 1,Volkswagen,SUV,200,2021,Compact SUV
+Tiguan 2,Volkswagen,SUV,205,2022,Modern SUV
+Tiguan 3,Volkswagen,SUV,210,2023,New model SUV
+Tiguan 4,Volkswagen,SUV,195,2020,Family SUV
+Tiguan 5,Volkswagen,SUV,198,2021,Urban SUV
+
+3Series 1,BMW,Luxury,300,2021,Sport luxury sedan
+3Series 2,BMW,Luxury,310,2022,Premium sedan
+3Series 3,BMW,Luxury,320,2023,New BMW design
+3Series 4,BMW,Luxury,290,2020,Comfort luxury
+3Series 5,BMW,Luxury,295,2021,Executive sedan
+
+X5 1,BMW,SUV,400,2022,Luxury SUV
+X5 2,BMW,SUV,420,2023,Premium SUV
+X5 3,BMW,SUV,390,2021,Powerful SUV
+X5 4,BMW,SUV,410,2022,Family luxury SUV
+X5 5,BMW,SUV,405,2020,Comfort SUV
+
+Model3 1,Tesla,Electric,250,2022,Electric sedan
+Model3 2,Tesla,Electric,260,2023,Smart EV
+Model3 3,Tesla,Electric,255,2021,Autopilot car
+Model3 4,Tesla,Electric,245,2020,Efficient EV
+Model3 5,Tesla,Electric,265,2023,New Tesla tech
+
+ModelY 1,Tesla,Electric,280,2022,Electric SUV
+ModelY 2,Tesla,Electric,290,2023,Family EV
+ModelY 3,Tesla,Electric,275,2021,Spacious EV
+ModelY 4,Tesla,Electric,285,2022,Modern SUV EV
+ModelY 5,Tesla,Electric,295,2023,Premium EV SUV

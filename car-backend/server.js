@@ -1,0 +1,47 @@
+import express from "express"
+import mongoose from "mongoose"
+import dotenv from "dotenv"
+import cors from "cors"
+
+import User from "./models/User.js"
+import authRoutes from "./routes/auth.js"
+import carRoutes from "./routes/cars.js"
+
+import { verifyToken } from "./middleware/authMiddleware.js"
+import adminRoutes from "./routes/admin.js"
+import reservationRoutes from "./routes/reservationRoutes.js"
+
+dotenv.config()
+
+const app = express()
+
+// middlewares
+app.use(cors())
+app.use(express.json())
+
+// routes
+app.use("/api/auth", authRoutes)
+app.use("/api/cars", carRoutes)
+app.use("/api/admin", verifyToken, adminRoutes)
+app.use("/api/reservations", reservationRoutes)
+app.use("/uploads", express.static("uploads"))
+
+// profile route
+app.get("/api/profile", verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password")
+    res.json({ user })
+  } catch (err) {
+    res.status(500).json(err)
+  }
+})
+
+// connect DB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected 🚀"))
+  .catch(err => console.log(err))
+
+// start server
+app.listen(5000, () => {
+  console.log("Server running on port 5000 🚀")
+})

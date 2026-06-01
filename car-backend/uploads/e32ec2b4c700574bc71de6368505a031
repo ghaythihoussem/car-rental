@@ -1,0 +1,55 @@
+name,brand,category,pricePerDay,year,description
+Corolla,Toyota,Sedan,120,2020,Reliable fuel efficient car
+Yaris,Toyota,Sedan,100,2019,Small city car
+Camry,Toyota,Sedan,150,2021,Comfort family sedan
+RAV4,Toyota,SUV,180,2022,Spacious SUV
+Land Cruiser,Toyota,SUV,300,2023,Off-road powerful SUV
+Hilux,Toyota,Truck,220,2022,Strong pickup truck
+
+Civic,Honda,Sedan,130,2021,Very popular efficient car
+Accord,Honda,Sedan,160,2022,Comfortable sedan
+CRV,Honda,SUV,190,2023,Family SUV
+Jazz,Honda,Sedan,110,2019,Compact city car
+
+Golf,Volkswagen,Sedan,140,2020,European hatchback
+Passat,Volkswagen,Sedan,170,2021,Comfort business car
+Tiguan,Volkswagen,SUV,200,2022,Modern SUV
+
+3 Series,BMW,Luxury,300,2022,Sport luxury sedan
+5 Series,BMW,Luxury,350,2023,Executive sedan
+X3,BMW,SUV,320,2022,Premium SUV
+X5,BMW,SUV,400,2023,Big luxury SUV
+
+A3,Audi,Luxury,280,2021,Premium compact sedan
+A4,Audi,Luxury,300,2022,Comfort luxury sedan
+Q5,Audi,SUV,360,2023,Luxury SUV
+
+C-Class,Mercedes,Luxury,320,2022,Executive sedan
+E-Class,Mercedes,Luxury,380,2023,High comfort sedan
+GLE,Mercedes,SUV,420,2023,Big luxury SUV
+
+Model 3,Tesla,Electric,250,2023,Fully electric sedan
+Model Y,Tesla,Electric,280,2023,Electric SUV
+Model S,Tesla,Electric,400,2024,Premium electric sedan
+
+Focus,Ford,Sedan,120,2019,Compact reliable car
+Mustang,Ford,Sport,350,2022,Powerful muscle car
+Explorer,Ford,SUV,260,2023,Big family SUV
+
+Corsa,Opel,Sedan,100,2018,Small city car
+Astra,Opel,Sedan,130,2020,Daily use car
+
+208,Peugeot,Sedan,110,2019,French compact car
+3008,Peugeot,SUV,180,2022,Modern SUV design
+
+Clio,Renault,Sedan,105,2018,Economical car
+Megane,Renault,Sedan,140,2021,Comfort hatchback
+
+Picanto,Kia,Sedan,90,2019,Very small city car
+Sportage,Kia,SUV,180,2022,Family SUV
+
+Rio,Hyundai,Sedan,95,2018,Cheap reliable car
+Tucson,Hyundai,SUV,190,2023,Modern SUV design
+
+Ibiza,Seat,Sedan,115,2020,Stylish compact car
+Leon,Seat,Sedan,135,2021,Sporty hatchback
