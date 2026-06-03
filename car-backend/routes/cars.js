@@ -46,7 +46,7 @@ router.post(
     try {
       const images = req.files
         ? req.files.map(
-            (f) => `http://localhost:5000/uploads/${f.filename}`
+            (f) => `${process.env.VITE_API_URL}/uploads/${f.filename}`
           )
         : [];
 
