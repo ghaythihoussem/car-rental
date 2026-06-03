@@ -15,7 +15,7 @@ export default function AdminReservations() {
       setLoading(true)
 
       const res = await axios.get(
-        "http://localhost:5000/api/reservations/admin",
+        `${import.meta.env.VITE_API_URL}/api/reservations/admin`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -39,7 +39,7 @@ export default function AdminReservations() {
   const updateStatus = async (id, status) => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/reservations/admin/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/reservations/admin/${id}`,
         { status },
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -61,7 +61,7 @@ export default function AdminReservations() {
   const deleteReservation = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/reservations/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/reservations/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

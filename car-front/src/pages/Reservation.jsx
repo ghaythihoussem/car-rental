@@ -32,7 +32,7 @@ export default function Reservation() {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/cars/${id}`
+          `${import.meta.env.VITE_API_URL}/api/cars/${id}`
         )
         setCar(res.data)
       } catch (err) {
@@ -50,7 +50,7 @@ export default function Reservation() {
     const fetchAvailability = async () => {
   try {
     const res = await axios.get(
-      `http://localhost:5000/api/reservations/availability/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/reservations/availability/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -124,7 +124,7 @@ export default function Reservation() {
       setSubmitting(true)
 
       await axios.post(
-        "http://localhost:5000/api/reservations",
+        `${import.meta.env.VITE_API_URL}/api/reservations`,
         {
           carId: car._id,
           startDate: startDate.toISOString(),

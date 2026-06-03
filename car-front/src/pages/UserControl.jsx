@@ -9,7 +9,7 @@ export default function UserControl() {
 
   // 👥 GET USERS
   const fetchUsers = async () => {
-    const res = await axios.get("http://localhost:5000/api/admin/users", {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
       headers: { Authorization: `Bearer ${token}` }
     })
 
@@ -22,7 +22,7 @@ export default function UserControl() {
 
   // ❌ DELETE USER
   const deleteUser = async (id) => {
-    await axios.delete(`http://localhost:5000/api/admin/users/${id}`, {
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
 
@@ -32,7 +32,7 @@ export default function UserControl() {
   // ✏️ UPDATE USER ROLE
   const updateUser = async () => {
     const res = await axios.put(
-      `http://localhost:5000/api/admin/users/${editingUser._id}`,
+      `${import.meta.env.VITE_API_URL}/api/admin/users/${editingUser._id}`,
       editingUser,
       {
         headers: { Authorization: `Bearer ${token}` }

@@ -19,8 +19,8 @@ app.use(cors())
 app.use(express.json())
 
 app.get("/", (req, res) => {
-  res.send("Backend API Running 🚗")
-})
+  res.send("Backend API Running 🚗");
+});
 
 // routes
 app.use("/api/auth", authRoutes)
