@@ -11,7 +11,7 @@ export default function Cars() {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/cars")
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cars`)
 
         // 🚀 STEP 3: NORMALIZE DATA (IMPORTANT FIX)
         const fixedData = res.data.map(car => ({

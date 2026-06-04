@@ -39,7 +39,7 @@ export default function AddCar() {
       formData.append("images", img)
     })
 
-    await axios.post("http://localhost:5000/api/cars/add", formData, {
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/cars/add`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data"
