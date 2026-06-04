@@ -45,7 +45,7 @@ export default function Signup() {
     if (!validate()) return
 
     try {
-      await axios.post("http://localhost:5000/api/auth/signup", form)
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/signup`, form)
 
       alert("Account created 🚀")
       navigate("/login")

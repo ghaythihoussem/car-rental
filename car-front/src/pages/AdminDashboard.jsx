@@ -15,7 +15,7 @@ export default function AdminDashboard() {
     try {
       setLoading(true)
 
-      const res = await axios.get("http://localhost:5000/api/cars")
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cars`)
 
       const fixed = res.data.map(car => ({
         ...car,
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
   // 🗑 DELETE
   const deleteCar = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cars/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/cars/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
   const updateCar = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/cars/${editingCar._id}`,
+        `${import.meta.env.VITE_API_URL}/api/cars/${editingCar._id}`,
         editingCar,
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
       })
 
       const res = await axios.put(
-        `http://localhost:5000/api/cars/${editingCar._id}`,
+        `${import.meta.env.VITE_API_URL}/api/cars/${editingCar._id}`,
         formData,
         {
           headers: {

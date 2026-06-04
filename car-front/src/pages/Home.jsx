@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/cars")
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cars`)
         setCars(res.data.slice(0, 6))
       } catch (err) {
         console.log(err)

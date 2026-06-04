@@ -14,7 +14,7 @@ function CarDetails() {
     const fetchCar = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/cars/${id}`
+          `${import.meta.env.VITE_API_URL}/api/cars/${id}`
         )
         setCar(res.data)
       } catch (err) {

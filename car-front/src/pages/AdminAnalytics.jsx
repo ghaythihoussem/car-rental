@@ -10,7 +10,7 @@ export default function AdminAnalytics() {
     const fetchAnalytics = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/reservations/admin/analytics",
+          `${import.meta.env.VITE_API_URL}/api/reservations/admin/analytics`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }

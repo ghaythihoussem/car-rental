@@ -28,7 +28,7 @@ export default function ImportCars() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/cars/import",
+        `${import.meta.env.VITE_API_URL}/api/cars/import`,
         formData,
         {
           headers: {

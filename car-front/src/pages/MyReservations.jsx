@@ -11,7 +11,7 @@ function MyReservations() {
     const fetchReservations = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/reservations/my",
+          `${import.meta.env.VITE_API_URL}/api/reservations/my`,
           {
             headers: {
               Authorization: `Bearer ${token}`
