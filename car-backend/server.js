@@ -18,16 +18,18 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+// IMPORTANT
+app.use("/uploads", express.static("uploads"))
+
 app.get("/", (req, res) => {
   res.send("Backend API Running 🚗");
-});
+})
 
 // routes
 app.use("/api/auth", authRoutes)
 app.use("/api/cars", carRoutes)
 app.use("/api/admin", verifyToken, adminRoutes)
 app.use("/api/reservations", reservationRoutes)
-app.use("/uploads", express.static("uploads"))
 
 // profile
 app.get("/api/profile", verifyToken, async (req, res) => {
@@ -44,7 +46,6 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected 🚀"))
   .catch(err => console.log(err))
 
-// PORT FIX
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
