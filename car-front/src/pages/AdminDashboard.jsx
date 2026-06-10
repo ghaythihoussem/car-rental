@@ -1,123 +1,134 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
-  const [cars, setCars] = useState([])
-  const [editingCar, setEditingCar] = useState(null)
-  const [imageFiles, setImageFiles] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [cars, setCars] = useState([]);
+  const [editingCar, setEditingCar] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
 
-  // 🚗 GET CARS
+  /* =========================
+     🚗 GET CARS
+  ========================= */
   const fetchCars = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
 
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cars`)
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/cars`
+      );
 
-      const fixed = res.data.map(car => ({
+      const fixed = res.data.map((car) => ({
         ...car,
         images: car.images?.length
           ? car.images
           : car.image
           ? [car.image]
-          : []
-      }))
+          : [],
+      }));
 
-      setCars(fixed)
+      setCars(fixed);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchCars()
-  }, [])
+    fetchCars();
+  }, []);
 
-  // 🗑 DELETE
+  /* =========================
+     🗑 DELETE CAR
+  ========================= */
   const deleteCar = async (id) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/cars/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/cars/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-      setCars(prev => prev.filter(c => c._id !== id))
+      setCars((prev) => prev.filter((c) => c._id !== id));
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
-  // ✏️ UPDATE INFO
+  /* =========================
+     ✏️ UPDATE INFO
+  ========================= */
   const updateCar = async () => {
     try {
       const res = await axios.put(
         `${import.meta.env.VITE_API_URL}/api/cars/${editingCar._id}`,
         editingCar,
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         }
-      )
+      );
 
-      setCars(prev =>
-        prev.map(c => c._id === editingCar._id ? res.data : c)
-      )
+      setCars((prev) =>
+        prev.map((c) => (c._id === editingCar._id ? res.data : c))
+      );
 
-      setEditingCar(null)
+      setEditingCar(null);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
-  // 🖼️ UPDATE IMAGES
+  /* =========================
+     🖼️ UPDATE IMAGES (CLOUDINARY)
+  ========================= */
   const updateImages = async () => {
     try {
-      const formData = new FormData()
+      const formData = new FormData();
 
-      imageFiles.forEach(img => {
-        formData.append("images", img)
-      })
+      imageFiles.forEach((img) => {
+        formData.append("images", img);
+      });
 
       const res = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/cars/${editingCar._id}`,
+        `${import.meta.env.VITE_API_URL}/api/cars/${editingCar._id}/images`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data"
-          }
+            "Content-Type": "multipart/form-data",
+          },
         }
-      )
+      );
 
-      setCars(prev =>
-        prev.map(c => c._id === editingCar._id ? res.data : c)
-      )
+      setCars((prev) =>
+        prev.map((c) => (c._id === editingCar._id ? res.data : c))
+      );
 
-      setEditingCar(null)
-      setImageFiles([])
-
+      setEditingCar(null);
+      setImageFiles([]);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex bg-gray-950 text-white">
 
       {/* SIDEBAR */}
       <div className="w-40 bg-black/40 p-6 border-r border-white/10">
-        <h1 className="text-2xl font-bold mb-8">👑Admin</h1>
+        <h1 className="text-2xl font-bold mb-8">👑 Admin</h1>
 
         <div className="flex flex-col gap-4">
           <Link to="/admin">Dashboard</Link>
           <Link to="/admin/add-car">➕ Add Car</Link>
           <Link to="/admin/users">👥 Users</Link>
-          <Link to="/admin/reservations">📅Reservations</Link>
+          <Link to="/admin/reservations">📅 Reservations</Link>
           <Link to="/admin/analytics">📊 Analytics</Link>
-          <Link to="/admin/import-cars">📁 Import Cars</Link>
         </div>
       </div>
 
@@ -130,10 +141,10 @@ export default function AdminDashboard() {
             Total Cars: {cars.length}
           </div>
           <div className="bg-white/10 p-5 rounded-xl">
-            Available: {cars.filter(c => c.available).length}
+            Available: {cars.filter((c) => c.available).length}
           </div>
           <div className="bg-white/10 p-5 rounded-xl">
-            Unavailable: {cars.filter(c => !c.available).length}
+            Unavailable: {cars.filter((c) => !c.available).length}
           </div>
         </div>
 
@@ -142,13 +153,17 @@ export default function AdminDashboard() {
           <p className="text-gray-400">Loading cars...</p>
         ) : (
           <div className="grid md:grid-cols-3 gap-6">
-
-            {cars.map(car => (
-              <div key={car._id} className="bg-white/10 rounded-xl overflow-hidden">
-
+            {cars.map((car) => (
+              <div
+                key={car._id}
+                className="bg-white/10 rounded-xl overflow-hidden"
+              >
                 {/* IMAGE */}
                 <img
-                  src={car.images?.[0] || "https://via.placeholder.com/400"}
+                  src={
+                    car.images?.[0] ||
+                    "https://via.placeholder.com/400"
+                  }
                   className="h-40 w-full object-cover"
                 />
 
@@ -180,7 +195,6 @@ export default function AdminDashboard() {
                 </div>
               </div>
             ))}
-
           </div>
         )}
 
@@ -199,7 +213,10 @@ export default function AdminDashboard() {
                 className="w-full mb-2 p-2 bg-black/40"
                 value={editingCar.name}
                 onChange={(e) =>
-                  setEditingCar({ ...editingCar, name: e.target.value })
+                  setEditingCar({
+                    ...editingCar,
+                    name: e.target.value,
+                  })
                 }
               />
 
@@ -208,7 +225,10 @@ export default function AdminDashboard() {
                 className="w-full mb-3 p-2 bg-black/40"
                 value={editingCar.pricePerDay}
                 onChange={(e) =>
-                  setEditingCar({ ...editingCar, pricePerDay: e.target.value })
+                  setEditingCar({
+                    ...editingCar,
+                    pricePerDay: e.target.value,
+                  })
                 }
               />
 
@@ -228,7 +248,9 @@ export default function AdminDashboard() {
                 type="file"
                 multiple
                 accept="image/*"
-                onChange={(e) => setImageFiles([...e.target.files])}
+                onChange={(e) =>
+                  setImageFiles(Array.from(e.target.files))
+                }
                 className="mb-3"
               />
 
@@ -244,7 +266,6 @@ export default function AdminDashboard() {
 
               {/* BUTTONS */}
               <div className="flex gap-2">
-
                 <button
                   onClick={updateCar}
                   className="w-1/2 bg-blue-600 py-2 rounded"
@@ -258,13 +279,12 @@ export default function AdminDashboard() {
                 >
                   Save Images
                 </button>
-
               </div>
 
               <button
                 onClick={() => {
-                  setEditingCar(null)
-                  setImageFiles([])
+                  setEditingCar(null);
+                  setImageFiles([]);
                 }}
                 className="w-full mt-2 bg-gray-600 py-2 rounded"
               >
@@ -274,8 +294,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
-
       </div>
     </div>
-  )
+  );
 }

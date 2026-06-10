@@ -2,15 +2,16 @@ import express from "express"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import User from "../models/User.js"
+import { validateSignup, validateLogin } from "../middleware/validation.js"
 
 const router = express.Router()
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", validateSignup, async (req, res) => {
   try {
     const { name, email, password } = req.body
 
     const exist = await User.findOne({ email })
-    if (exist) return res.status(400).json("User already exists")
+    if (exist) return res.status(400).json({ message: "User already exists" })
 
     const hashed = await bcrypt.hash(password, 10)
 
@@ -20,49 +21,50 @@ router.post("/signup", async (req, res) => {
       password: hashed
     })
 
-    res.json(user)
+    res.status(201).json({ message: "User created successfully", user })
 
   } catch (err) {
-    res.status(500).json(err)
+    res.status(500).json({ error: err.message })
   }
 })
-router.post("/login", async (req, res) => {
+
+router.post("/login", validateLogin, async (req, res) => {
   try {
     const { email, password } = req.body
 
-    // 1. نلقاو user
     const user = await User.findOne({ email })
     if (!user) {
-      return res.status(404).json("User not found")
+      return res.status(404).json({ message: "User not found" })
     }
 
-    // 2. نقارنو password
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
-      return res.status(400).json("Wrong password")
+      return res.status(400).json({ message: "Wrong password" })
     }
 
-    // 3. نعملو token
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ message: "JWT_SECRET not configured" })
+    }
+
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     )
 
-    // 4. نرجعو response
-  res.json({
-  message: "Login success",
-  token,
-  user: {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role
-  }
-})
+    res.json({
+      message: "Login success",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    })
 
   } catch (err) {
-    res.status(500).json(err)
+    res.status(500).json({ error: err.message })
   }
 })
 

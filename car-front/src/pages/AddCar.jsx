@@ -1,9 +1,9 @@
-import { useState } from "react"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AddCar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [car, setCar] = useState({
     name: "",
@@ -12,42 +12,50 @@ export default function AddCar() {
     pricePerDay: "",
     year: "",
     description: ""
-  })
+  });
 
-  // 🚗 multiple images state
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState([]);
 
   const handleChange = (e) => {
-    setCar({ ...car, [e.target.name]: e.target.value })
-  }
+    setCar({ ...car, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem("token")
+    try {
+      const token = localStorage.getItem("token");
 
-    const formData = new FormData()
+      const formData = new FormData();
 
-    // text fields
-    formData.append("name", car.name)
-    formData.append("brand", car.brand)
-    formData.append("category", car.category)
-    formData.append("pricePerDay", car.pricePerDay)
-    formData.append("year", car.year)
-    formData.append("description", car.description)
+      // text fields
+      formData.append("name", car.name);
+      formData.append("brand", car.brand);
+      formData.append("category", car.category);
+      formData.append("pricePerDay", car.pricePerDay);
+      formData.append("year", car.year);
+      formData.append("description", car.description);
 
-    // images (MULTIPLE)
-    images.forEach((img) => {
-      formData.append("images", img)
-    })
+      // images
+      images.forEach((img) => {
+        formData.append("images", img);
+      });
 
-    await axios.post(`${import.meta.env.VITE_API_URL}/api/cars/add`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data"
-      }
-    })
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/cars/add`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      );
 
-    navigate("/admin")
-  }
+      navigate("/admin");
+    } catch (err) {
+      console.log("Upload error:", err);
+      alert("Failed to add car");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-6">
@@ -74,7 +82,6 @@ export default function AddCar() {
             className="p-3 rounded bg-black/40"
           />
 
-          {/* CATEGORY */}
           <select
             name="category"
             onChange={handleChange}
@@ -103,12 +110,11 @@ export default function AddCar() {
             className="p-3 rounded bg-black/40"
           />
 
-          {/* 📸 MULTIPLE IMAGES INPUT */}
           <input
             type="file"
             multiple
             accept="image/*"
-            onChange={(e) => setImages([...e.target.files])}
+            onChange={(e) => setImages(Array.from(e.target.files))}
             className="p-3 rounded bg-black/40"
           />
 
@@ -129,5 +135,5 @@ export default function AddCar() {
         </div>
       </div>
     </div>
-  )
+  );
 }

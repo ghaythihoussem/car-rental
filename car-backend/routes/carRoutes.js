@@ -1,29 +1,146 @@
-import express from "express"
-import Car from "../models/Car.js"
-import { upload } from "../middleware/upload.js"
+import express from "express";
+import Car from "../models/Car.js";
+import cloudinary from "../config/cloudinary.js";
+import { upload } from "../middleware/upload.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
+import { isAdmin } from "../middleware/adminMiddleware.js";
+import { validateCar } from "../middleware/validation.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/add", upload.array("images", 10), async (req, res) => {
+/* =========================
+   🟢 ADD CAR
+========================= */
+router.post(
+  "/add",
+  verifyToken,
+  isAdmin,
+  upload.array("images", 10),
+  validateCar,
+  async (req, res) => {
+    try {
+      const uploadedImages = [];
+
+      for (const file of req.files) {
+        const result = await cloudinary.uploader.upload_stream(
+          { folder: "car-rental" },
+          (error, result) => {
+            if (error) {
+              console.error("Cloudinary upload error:", error);
+            } else if (result) {
+              uploadedImages.push(result.secure_url);
+            }
+          }
+        ).end(file.buffer);
+      }
+
+      const car = await Car.create({
+        ...req.body,
+        pricePerDay: Number(req.body.pricePerDay),
+        year: Number(req.body.year),
+        images: uploadedImages,
+      });
+
+      res.status(201).json({ message: "Car added successfully", car });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+);
+
+/* =========================
+   🟢 UPDATE INFO ONLY
+========================= */
+router.put("/:id", verifyToken, isAdmin, validateCar, async (req, res) => {
   try {
-    console.log("👉 BODY:", req.body)
-    console.log("👉 FILES:", req.files)
+    const car = await Car.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
-    const images = req.files?req.files.map(
-      (file) => `http://localhost:5000/uploads/${file.filename}`
-    ): []
-
-    const car = await Car.create({
-      ...req.body,
-      images
-    })
-
-    res.json(car)
-
+    if (!car) return res.status(404).json({ message: "Car not found" });
+    res.json({ message: "Car updated successfully", car });
   } catch (err) {
-  console.log("🔥 ERROR:", err)
-  res.status(500).json({ message: err.message })
-}
-})
+    res.status(500).json({ error: err.message });
+  }
+});
 
-export default router
+/* =========================
+   🟢 UPDATE IMAGES ONLY
+========================= */
+router.put(
+  "/:id/images",
+  verifyToken,
+  isAdmin,
+  upload.array("images", 10),
+  async (req, res) => {
+    try {
+      const uploadedImages = [];
+
+      for (const file of req.files) {
+        const result = await cloudinary.uploader.upload_stream(
+          { folder: "car-rental" },
+          (error, result) => {
+            if (error) {
+              console.error("Cloudinary upload error:", error);
+            } else if (result) {
+              uploadedImages.push(result.secure_url);
+            }
+          }
+        ).end(file.buffer);
+      }
+
+      const car = await Car.findByIdAndUpdate(
+        req.params.id,
+        { images: uploadedImages },
+        { new: true }
+      );
+
+      if (!car) return res.status(404).json({ message: "Car not found" });
+      res.json({ message: "Images updated successfully", car });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+);
+
+/* =========================
+   🟢 GET ALL
+========================= */
+router.get("/", async (req, res) => {
+  try {
+    const cars = await Car.find();
+    res.json(cars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* =========================
+   🟢 GET ONE
+========================= */
+router.get("/:id", async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id);
+    if (!car) return res.status(404).json({ message: "Car not found" });
+    res.json(car);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* =========================
+   🟢 DELETE CAR
+========================= */
+router.delete("/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id);
+    if (!car) return res.status(404).json({ message: "Car not found" });
+
+    await Car.findByIdAndDelete(req.params.id);
+    res.json({ message: "Car deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+export default router;

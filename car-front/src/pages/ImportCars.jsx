@@ -6,13 +6,17 @@ export default function ImportCars() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // 🟢 file select
+  /* =========================
+     📂 SELECT FILE
+  ========================= */
   const handleFile = (e) => {
     setFile(e.target.files[0]);
     setMessage("");
   };
 
-  // 🟢 upload CSV
+  /* =========================
+     🚀 UPLOAD CSV
+  ========================= */
   const handleUpload = async () => {
     if (!file) {
       setMessage("❌ Please select a CSV file first");
@@ -22,7 +26,7 @@ export default function ImportCars() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const token = localStorage.getItem("token"); // 🔑 مهم
+    const token = localStorage.getItem("token");
 
     try {
       setLoading(true);
@@ -32,20 +36,21 @@ export default function ImportCars() {
         formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 🔥 حل 401
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      setMessage(`🚗 Imported: ${res.data.count} cars`);
+      setMessage(`🚗 Imported: ${res.data.count} cars successfully`);
       setFile(null);
     } catch (err) {
       console.log(err);
 
       if (err.response?.status === 401) {
-        setMessage("🚫 You need to login as an admin");
+        setMessage("🚫 Unauthorized: login as admin required");
       } else {
-        setMessage("❌ Error importing file");
+        setMessage("❌ Error importing CSV file");
       }
     } finally {
       setLoading(false);
@@ -53,11 +58,11 @@ export default function ImportCars() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-105 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white">
 
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">
+      <div className="bg-white/10 border border-white/10 shadow-xl rounded-2xl p-8 w-96 text-center">
+
+        <h1 className="text-2xl font-bold mb-6">
           🚗 Import Cars CSV
         </h1>
 
@@ -66,17 +71,17 @@ export default function ImportCars() {
           type="file"
           accept=".csv"
           onChange={handleFile}
-          className="block w-full text-sm text-gray-600
+          className="block w-full text-sm text-gray-300
                      file:mr-4 file:py-2 file:px-4
                      file:rounded-full file:border-0
                      file:text-sm file:font-semibold
-                     file:bg-blue-50 file:text-blue-700
-                     hover:file:bg-blue-100"
+                     file:bg-blue-600 file:text-white
+                     hover:file:bg-blue-700"
         />
 
         {/* FILE NAME */}
         {file && (
-          <p className="mt-3 text-sm text-gray-600">
+          <p className="mt-3 text-sm text-gray-300">
             📄 {file.name}
           </p>
         )}
@@ -85,18 +90,18 @@ export default function ImportCars() {
         <button
           onClick={handleUpload}
           disabled={loading}
-          className={`mt-6 w-full py-2 rounded-xl font-semibold transition
-            ${loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700 text-white"
-            }`}
+          className={`mt-6 w-full py-2 rounded-xl font-semibold transition ${
+            loading
+              ? "bg-gray-500 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          }`}
         >
           {loading ? "Uploading..." : "Upload CSV 🚀"}
         </button>
 
         {/* MESSAGE */}
         {message && (
-          <p className="mt-4 text-sm font-medium text-gray-700">
+          <p className="mt-4 text-sm font-medium text-gray-300">
             {message}
           </p>
         )}
