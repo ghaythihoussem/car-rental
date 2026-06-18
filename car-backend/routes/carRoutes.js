@@ -8,6 +8,19 @@ import { validateCar } from "../middleware/validation.js";
 
 const router = express.Router();
 
+const uploadBufferToCloudinary = (buffer) =>
+  new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "car-rental" },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+
+    stream.end(buffer);
+  });
+
 /* =========================
    🟢 ADD CAR
 ========================= */
@@ -21,17 +34,14 @@ router.post(
     try {
       const uploadedImages = [];
 
-      for (const file of req.files) {
-        const result = await cloudinary.uploader.upload_stream(
-          { folder: "car-rental" },
-          (error, result) => {
-            if (error) {
-              console.error("Cloudinary upload error:", error);
-            } else if (result) {
-              uploadedImages.push(result.secure_url);
-            }
-          }
-        ).end(file.buffer);
+      if (req.files && req.files.length > 0) {
+        const uploadResults = await Promise.all(
+          req.files.map((file) => uploadBufferToCloudinary(file.buffer))
+        );
+
+        uploadResults.forEach((result) => {
+          if (result?.secure_url) uploadedImages.push(result.secure_url);
+        });
       }
 
       const car = await Car.create({
@@ -74,20 +84,16 @@ router.put(
   upload.array("images", 10),
   async (req, res) => {
     try {
-      const uploadedImages = [];
-
-      for (const file of req.files) {
-        const result = await cloudinary.uploader.upload_stream(
-          { folder: "car-rental" },
-          (error, result) => {
-            if (error) {
-              console.error("Cloudinary upload error:", error);
-            } else if (result) {
-              uploadedImages.push(result.secure_url);
-            }
-          }
-        ).end(file.buffer);
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ message: "No images provided" });
       }
+
+      const uploadResults = await Promise.all(
+        req.files.map((file) => uploadBufferToCloudinary(file.buffer))
+      );
+      const uploadedImages = uploadResults
+        .filter((result) => result?.secure_url)
+        .map((result) => result.secure_url);
 
       const car = await Car.findByIdAndUpdate(
         req.params.id,
