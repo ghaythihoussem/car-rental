@@ -48,11 +48,11 @@ export const validateLogin = (req, res, next) => {
 };
 
 export const validateCar = (req, res, next) => {
-  const { brand, model, year, pricePerDay } = req.body;
+  const { brand, name, category, year, pricePerDay } = req.body;
 
-  if (!brand || !model || !year || !pricePerDay) {
+  if (!brand || !name || !category || !year || !pricePerDay) {
     return res.status(400).json({ 
-      message: "Brand, model, year, and pricePerDay are required" 
+      message: "Brand, name, category, year, and pricePerDay are required" 
     });
   }
 
@@ -68,15 +68,22 @@ export const validateCar = (req, res, next) => {
     });
   }
 
+  const validCategories = ["SUV", "Sedan", "Sport", "Luxury", "Electric", "Truck"];
+  if (!validCategories.includes(category)) {
+    return res.status(400).json({ 
+      message: "Category must be one of: SUV, Sedan, Sport, Luxury, Electric, Truck" 
+    });
+  }
+
   if (brand.length < 2 || brand.length > 50) {
     return res.status(400).json({ 
       message: "Brand must be between 2 and 50 characters" 
     });
   }
 
-  if (model.length < 2 || model.length > 50) {
+  if (name.length < 2 || name.length > 50) {
     return res.status(400).json({ 
-      message: "Model must be between 2 and 50 characters" 
+      message: "Name must be between 2 and 50 characters" 
     });
   }
 
